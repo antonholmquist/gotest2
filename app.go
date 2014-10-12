@@ -16,7 +16,7 @@ func main() {
 	}	
 
 	// gorilla/mux is a powerful URL router and dispatcher.
-	router := mux.NewRouter()
+	router := mux.NewRouter().PathPrefix("/v1").Subrouter()
 
 	router.HandleFunc("/", func (res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "text/plain")
