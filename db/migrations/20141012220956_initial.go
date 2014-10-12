@@ -11,7 +11,7 @@ func Up_20141012220956(txn *sql.Tx) {
 
 	fmt.Println("Hello from migration Up_20141012220956 Up!")
 
-	txn.Exec("CREATE TABLE user2 (name text);")
+	txn.Exec("CREATE TABLE \"user\" (name text);")
 
 }
 
@@ -19,5 +19,5 @@ func Up_20141012220956(txn *sql.Tx) {
 func Down_20141012220956(txn *sql.Tx) {
 	 fmt.Println("Hello from migration Down_20141012220956 Down!")
 
-	 txn.Exec("DROP TABLE user2")
+	 txn.Exec("DROP TABLE \"user\"")
 }
