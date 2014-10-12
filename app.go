@@ -7,10 +7,6 @@ import (
     "github.com/gorilla/mux"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
-}
-
 func main() {
 
 	port := os.Getenv("PORT");
@@ -19,7 +15,7 @@ func main() {
 		port = "3000"
 	}	
 
-
+	// gorilla/mux is a powerful URL router and dispatcher.
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", func (res http.ResponseWriter, req *http.Request) {
@@ -38,4 +34,5 @@ func main() {
 
     http.Handle("/", router)
     http.ListenAndServe(":" + port, nil)
+    fmt.Println("Starting server on port", port)
 }
