@@ -16,10 +16,8 @@ func main() {
 
 	if len(port) == 0 {
 		port = "3000"
-	}
-
-	fmt.Println("PORT:", port)
+	}	
 
     http.HandleFunc("/", handler)
-    http.ListenAndServe(":3000", nil)
+    http.ListenAndServe(":" + port, nil)
 }
