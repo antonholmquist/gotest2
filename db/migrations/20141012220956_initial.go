@@ -11,7 +11,7 @@ func Up_20141012220956(txn *sql.Tx) {
 
 	fmt.Println("Hello from migration Up_20141012220956 Up!")
 
-	txn.Exec("CREATE TABLE \"user\" (name text);")
+	txn.Exec("CREATE TABLE \"user\" (id BIGSERIAL UNIQUE, name TEXT);")
 
 }
 
