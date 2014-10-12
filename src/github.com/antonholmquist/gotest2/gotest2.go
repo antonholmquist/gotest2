@@ -5,9 +5,20 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
+	_ "github.com/lib/pq"
+	"database/sql"
 )
 
 func main() {
+
+	db, err := sql.Open("postgres", "host=localhost port=5432 sslmode=disable")
+	err = db.Ping()
+
+	if (err != nil) {
+		fmt.Println("error opening database:", err);
+	} else if (db != nil) {
+		fmt.Println("opened database:", db);
+	} 
 
 	port := os.Getenv("PORT")
 
