@@ -43,6 +43,18 @@ func main() {
 		res.Write([]byte("user id: " + userID))
 	})
 
+	router.Methods("GET").Path("/users").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "text/plain")
+		res.Write([]byte("GET USERS"))
+	})
+
+	router.Methods("POST").Path("/users").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "text/plain")
+		res.Write([]byte("POST USERS"))
+	})
+
+
+
 	http.Handle("/", router)
 	http.ListenAndServe(":"+port, nil)
 	fmt.Println("Starting server on port", port)
