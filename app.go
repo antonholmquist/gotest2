@@ -4,6 +4,7 @@ import (
     "fmt"
     "net/http"
     "os"
+    "github.com/gorilla/mux"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +19,13 @@ func main() {
 		port = "3000"
 	}	
 
-    http.HandleFunc("/", handler)
+
+	router := mux.NewRouter()
+	router.HandleFunc("/", func (res http.ResponseWriter, req *http.Request) {
+		res.Header().Set("Content-Type", "text/plain")
+		res.Write([]byte("This is an example server.\n"))
+	})
+
+    http.Handle("/", router)
     http.ListenAndServe(":" + port, nil)
 }
