@@ -21,9 +21,19 @@ func main() {
 
 
 	router := mux.NewRouter()
+
 	router.HandleFunc("/", func (res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "text/plain")
-		res.Write([]byte("This is an example server.\n"))
+		res.Write([]byte("This is an example server."))
+	})
+
+	router.HandleFunc("/users/{userID}", func (res http.ResponseWriter, req *http.Request) {
+
+		vars := mux.Vars(req)
+		userID := vars["userID"]
+
+		res.Header().Set("Content-Type", "text/plain")
+		res.Write([]byte("user id: " + userID))
 	})
 
     http.Handle("/", router)
