@@ -1,1 +1,1 @@
-web: gotest2
+web: app
