@@ -7,6 +7,16 @@ export GOPATH=/Users/antonholmquist/Projects/gotest2
 # Format code (fixes indentation and stuff)
 go fmt
 
+# Dependencies
+
+## Gorilla Mux
+https://github.com/gorilla/mux
+URL router
+
+## Goose
+https://bitbucket.org/liamstask/goose
+Database migrations
+
 # Run
 go run app.go
 
