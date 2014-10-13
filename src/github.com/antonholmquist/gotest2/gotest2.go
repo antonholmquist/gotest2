@@ -1,12 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"net/http"
 	"os"
-	_ "github.com/lib/pq"
-	"database/sql"
 )
 
 func main() {
@@ -14,11 +14,11 @@ func main() {
 	db, err := sql.Open("postgres", "host=localhost port=5432 dbname=test sslmode=disable")
 	err = db.Ping()
 
-	if (err != nil) {
-		fmt.Println("error opening database:", err);
-	} else if (db != nil) {
-		fmt.Println("opened database:", db);
-	} 
+	if err != nil {
+		fmt.Println("error opening database:", err)
+	} else if db != nil {
+		fmt.Println("opened database:", db)
+	}
 
 	port := os.Getenv("PORT")
 
@@ -50,25 +50,18 @@ func main() {
 
 	router.Methods("POST").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 
-
 		_, queryError := db.Exec("INSERT INTO \"user\" (name) VALUES ('anton holmquist');")
 
-		if (queryError != nil) {
+		if queryError != nil {
 			res.Header().Set("Content-Type", "text/plain")
 			res.Write([]byte("POST FAILED: " + queryError.Error()))
 		} else {
 
-
-
 			res.Header().Set("Content-Type", "text/plain")
 			res.Write([]byte("POST USER"))
 		}
-		
 
-		
 	})
-
-
 
 	http.Handle("/", router)
 	http.ListenAndServe(":"+port, nil)
