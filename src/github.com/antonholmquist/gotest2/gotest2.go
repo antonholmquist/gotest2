@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	db, err := sql.Open("postgres", "host=localhost port=5432 sslmode=disable")
+	db, err := sql.Open("postgres", "host=localhost port=5432 dbname=test sslmode=disable")
 	err = db.Ping()
 
 	if (err != nil) {
@@ -43,14 +43,29 @@ func main() {
 		res.Write([]byte("user id: " + userID))
 	})
 
-	router.Methods("GET").Path("/users").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+	router.Methods("GET").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Content-Type", "text/plain")
-		res.Write([]byte("GET USERS"))
+		res.Write([]byte("GET USER"))
 	})
 
-	router.Methods("POST").Path("/users").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		res.Header().Set("Content-Type", "text/plain")
-		res.Write([]byte("POST USERS"))
+	router.Methods("POST").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+
+
+		_, queryError := db.Exec("INSERT INTO \"user\" (name) VALUES ('anton holmquist');")
+
+		if (queryError != nil) {
+			res.Header().Set("Content-Type", "text/plain")
+			res.Write([]byte("POST FAILED: " + queryError.Error()))
+		} else {
+
+
+
+			res.Header().Set("Content-Type", "text/plain")
+			res.Write([]byte("POST USER"))
+		}
+		
+
+		
 	})
 
 
