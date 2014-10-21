@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"github.com/jmoiron/sqlx"
+	"encoding/json"
 )
 
 type User struct {
@@ -66,8 +67,11 @@ func main() {
 				fmt.Printf("row: %d, %s\n", user.ID, user.Name)
 			}
 
+			s, _ := json.Marshal(users)
+			fmt.Printf("json: %s", s)
+
 			res.Header().Set("Content-Type", "text/plain")
-			res.Write([]byte("GET USER"))
+			res.Write(s)
 		}
 
 	})
@@ -91,6 +95,8 @@ func main() {
 		if queryError != nil {
 			res.Header().Set("Content-Type", "text/plain")
 			res.Write([]byte("POST FAILED: " + queryError.Error()))
+
+			// http.Error(res, queryError.Error(), 500)
 		} else {
 
 			res.Header().Set("Content-Type", "text/plain")
