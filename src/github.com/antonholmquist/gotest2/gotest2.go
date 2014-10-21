@@ -51,11 +51,8 @@ func main() {
 
 	router.Methods("GET").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 
-		//rows, queryError := db.Query("SELECT name FROM \"user\"")
-
 		users := []User{}
-    	queryError := db.Select(&users, "SELECT * FROM \"user\" ORDER BY name ASC")
-
+    	queryError := db.Select(&users, "SELECT * FROM \"user\" ORDER BY id ASC")
     	
 		if queryError != nil {
 			res.Header().Set("Content-Type", "text/plain")
