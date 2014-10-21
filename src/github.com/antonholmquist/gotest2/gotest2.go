@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -11,12 +10,13 @@ import (
 )
 
 type User struct {
+	ID int64 `db:"id"`
     Name string `db:"name"`
 }
 
 func main() {
 
-	db, err := sql.Open("postgres", "host=localhost port=5432 dbname=test sslmode=disable")
+	db, err := sqlx.Connect("postgres", "host=localhost port=5432 dbname=test sslmode=disable")
 	err = db.Ping()
 
 	if err != nil {
@@ -50,24 +50,20 @@ func main() {
 
 	router.Methods("GET").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 
-		rows, queryError := db.Query("SELECT name FROM \"user\"")
+		//rows, queryError := db.Query("SELECT name FROM \"user\"")
 
-		//users := []User{}
-    	//db.Select(&users, "SELECT * FROM person ORDER BY first_name ASC")
+		users := []User{}
+    	queryError := db.Select(&users, "SELECT * FROM \"user\" ORDER BY name ASC")
 
+    	
 		if queryError != nil {
 			res.Header().Set("Content-Type", "text/plain")
 			res.Write([]byte("GET FAILED: " + queryError.Error()))
 		} else {
 
-			for rows.Next() {
-				var name string
-				if err := rows.Scan(&name); err != nil {
-					fmt.Println("failed to scan")
-				}
-
-
-				fmt.Printf("%s\n", name)
+			for i := 0; i < len(users); i++ {
+				user := users[i]
+				fmt.Printf("row: %d, %s\n", user.ID, user.Name)
 			}
 
 			res.Header().Set("Content-Type", "text/plain")

@@ -4,6 +4,10 @@ Should be set to project directory to make everything simple
 
 export GOPATH=/Users/antonholmquist/Projects/gotest2
 
+
+# Run
+go run app.go
+
 # Format code (fixes indentation and stuff)
 go fmt
 
@@ -17,8 +21,12 @@ URL router
 https://bitbucket.org/liamstask/goose
 Database migrations
 
-# Run
-go run app.go
+# Add dependency
+
+go get github.com/jmoiron/sqlx
+
+Then remove .git add commit everything in.
+
 
 # Migrations
 
