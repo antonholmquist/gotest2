@@ -9,6 +9,10 @@ import (
 	"os"
 )
 
+type User struct {
+    Name string `db:"name"`
+}
+
 func main() {
 
 	db, err := sql.Open("postgres", "host=localhost port=5432 dbname=test sslmode=disable")
@@ -44,8 +48,31 @@ func main() {
 	})
 
 	router.Methods("GET").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		res.Header().Set("Content-Type", "text/plain")
-		res.Write([]byte("GET USER"))
+
+		rows, queryError := db.Query("SELECT name FROM \"user\"")
+
+		//users := []User{}
+    	//db.Select(&users, "SELECT * FROM person ORDER BY first_name ASC")
+
+		if queryError != nil {
+			res.Header().Set("Content-Type", "text/plain")
+			res.Write([]byte("GET FAILED: " + queryError.Error()))
+		} else {
+
+			for rows.Next() {
+				var name string
+				if err := rows.Scan(&name); err != nil {
+					fmt.Println("failed to scan")
+				}
+
+
+				fmt.Printf("%s\n", name)
+			}
+
+			res.Header().Set("Content-Type", "text/plain")
+			res.Write([]byte("GET USER"))
+		}
+
 	})
 
 	router.Methods("POST").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
