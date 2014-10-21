@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 	"net/http"
 	"os"
+	"github.com/jmoiron/sqlx"
 )
 
 type User struct {
