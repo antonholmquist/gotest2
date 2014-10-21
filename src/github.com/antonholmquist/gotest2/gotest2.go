@@ -72,9 +72,21 @@ func main() {
 
 	})
 
+	
 	router.Methods("POST").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 
-		_, queryError := db.Exec("INSERT INTO \"user\" (name) VALUES ($1);", "anton holmquist")
+		db.MustExec("INSERT INTO \"user\" (name) VALUES ($1);", "anton holmquist")
+
+		res.Header().Set("Content-Type", "text/plain")
+		res.Write([]byte("POST USER"))
+
+	})
+
+
+	/*
+	router.Methods("POST").Path("/user").HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+
+		_, queryError := db.Exec("INSERT x INTO \"user\" (name) VALUES ($1);", "anton holmquist")
 
 		if queryError != nil {
 			res.Header().Set("Content-Type", "text/plain")
@@ -85,7 +97,7 @@ func main() {
 			res.Write([]byte("POST USER"))
 		}
 
-	})
+	})*/
 
 	http.Handle("/", router)
 	http.ListenAndServe(":"+port, nil)
